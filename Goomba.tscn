@@ -1,0 +1,135 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://sprites/enemywalk.png" type="Texture" id=1]
+[ext_resource path="res://Goomba.gd" type="Script" id=2]
+[ext_resource path="res://KillArea.gd" type="Script" id=3]
+[ext_resource path="res://sprites/enemyhit.png" type="Texture" id=4]
+[ext_resource path="res://sound/Enemy_Dies.wav" type="AudioStream" id=5]
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 9.3153, 10 )
+
+[sub_resource type="Animation" id=4]
+resource_name = "Death"
+tracks/0/type = "audio"
+tracks/0/path = NodePath("DeathSound")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"clips": [ {
+"end_offset": 0.477319,
+"start_offset": 0.0,
+"stream": ExtResource( 5 )
+} ],
+"times": PoolRealArray( 0 )
+}
+tracks/1/type = "method"
+tracks/1/path = NodePath("..")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.6 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "queue_free"
+} ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("../SpriteDie:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.2, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 0 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("../SpriteMove:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("../SpriteDie:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+
+[sub_resource type="Animation" id=1]
+resource_name = "Walk"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath("SpriteMove:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3, 4 ]
+}
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 8.38566, 13.0142 )
+
+[node name="Goomba" type="KinematicBody2D"]
+scale = Vector2( 4, 4 )
+script = ExtResource( 2 )
+
+[node name="KillArea" type="Area2D" parent="."]
+script = ExtResource( 3 )
+
+[node name="KillShape" type="CollisionShape2D" parent="KillArea"]
+position = Vector2( -0.278404, -5.67948 )
+scale = Vector2( 0.696972, 1.05255 )
+shape = SubResource( 3 )
+
+[node name="KillAnimation" type="AnimationPlayer" parent="KillArea"]
+anims/Death = SubResource( 4 )
+
+[node name="DeathSound" type="AudioStreamPlayer" parent="KillArea"]
+stream = ExtResource( 5 )
+
+[node name="Hurt Area" type="Area2D" parent="."]
+
+[node name="SpriteDie" type="Sprite" parent="."]
+position = Vector2( -0.556816, -2.11588 )
+texture = ExtResource( 4 )
+hframes = 2
+
+[node name="SpriteMove" type="Sprite" parent="."]
+position = Vector2( 0.0556831, -2.11588 )
+texture = ExtResource( 1 )
+hframes = 6
+frame = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/Walk = SubResource( 1 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( -0.501133, -0.111362 )
+shape = SubResource( 2 )
+[connection signal="body_entered" from="KillArea" to="KillArea" method="_on_KillArea_body_entered"]

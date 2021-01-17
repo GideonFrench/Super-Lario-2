@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/Hero_Hurt.wav-f8848b73bc206d127ce386b2bb51f06f.sample"
+
+[deps]
+
+source_file="res://sound/Hero_Hurt.wav"
+dest_files=[ "res://.import/Hero_Hurt.wav-f8848b73bc206d127ce386b2bb51f06f.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

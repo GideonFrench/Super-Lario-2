@@ -1,0 +1,73 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://sprites/tiles.png" type="Texture" id=1]
+[ext_resource path="res://DestructArea.gd" type="Script" id=2]
+[ext_resource path="res://sound/Shield.wav" type="AudioStream" id=3]
+
+[sub_resource type="Animation" id=3]
+resource_name = "Destroy"
+tracks/0/type = "audio"
+tracks/0/path = NodePath("AudioStreamPlayer")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"clips": [ {
+"end_offset": 0.0,
+"start_offset": 0.0,
+"stream": ExtResource( 3 )
+} ],
+"times": PoolRealArray( 0 )
+}
+tracks/1/type = "method"
+tracks/1/path = NodePath("..")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.2 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "queue_free"
+} ]
+}
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 16, 8 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 24, 7.85183 )
+
+[node name="Destruct" type="Node2D"]
+
+[node name="DestructArea" type="Area2D" parent="."]
+script = ExtResource( 2 )
+
+[node name="BlockSprite" type="Sprite" parent="DestructArea"]
+scale = Vector2( 6, 6 )
+texture = ExtResource( 1 )
+vframes = 12
+hframes = 12
+frame = 13
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="DestructArea"]
+anims/Destroy = SubResource( 3 )
+
+[node name="DestroyShape" type="CollisionShape2D" parent="DestructArea"]
+position = Vector2( 0, 16 )
+shape = SubResource( 1 )
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="DestructArea"]
+stream = ExtResource( 3 )
+
+[node name="DestructCollision" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape" type="CollisionShape2D" parent="DestructCollision"]
+position = Vector2( 0, -4.4 )
+scale = Vector2( 1, 2.5 )
+shape = SubResource( 2 )
+[connection signal="area_entered" from="DestructArea" to="DestructArea" method="_on_DestructArea_area_entered"]
+[connection signal="body_entered" from="DestructArea" to="DestructArea" method="_on_DestructArea_body_entered"]
