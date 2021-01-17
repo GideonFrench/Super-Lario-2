@@ -1,5 +1,7 @@
 extends KinematicBody2D
 
+# The score of how many coins picked up
+var score : int  = 0
 # Whether the player can double jump or not, 1 if a jump is available
 var doublejump :int = 1
 # Acceleration to the right
@@ -26,6 +28,13 @@ var vel : Vector2 = Vector2()
 onready var isprite : Sprite = get_node("SpriteIdle")
 # The movement sprite
 onready var msprite : Sprite = get_node("SpriteMove")
+
+func _ready():
+	GameManager.Player = self
+	
+func increaseScore():
+	score += 1
+	GameManager.UI.set_text(String(score))
 
 func _physics_process(delta):
 	# Only show the idle sprite at first

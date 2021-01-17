@@ -1,7 +1,9 @@
-extends StaticBody2D
+tool extends Area2D
 
-func _ready():
-	pass
-
-func _process(delta):
-	pass
+func _on_CoinArea_body_entered(body):
+	# Increase the score
+	GameManager.Player.increaseScore()
+	# Sets coin to disappear
+	$Coin.visible = false
+	# Plays noise and removes from scene
+	$AnimationPlayer.play("Pickup")

@@ -1,67 +1,93 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://sprites/tiles.png" type="Texture" id=1]
 [ext_resource path="res://Coin.gd" type="Script" id=2]
-[ext_resource path="res://CoinSpin.tres" type="Animation" id=3]
-
-[sub_resource type="RectangleShape2D" id=8]
-extents = Vector2( 4.02072, 3.98702 )
-
-[sub_resource type="AtlasTexture" id=1]
-atlas = ExtResource( 1 )
-region = Rect2( 48, 8, 8, 8 )
+[ext_resource path="res://sound/Money.wav" type="AudioStream" id=3]
 
 [sub_resource type="AtlasTexture" id=2]
 atlas = ExtResource( 1 )
-region = Rect2( 56, 8, 8, 8 )
+region = Rect2( 48, 8, 8, 8 )
 
 [sub_resource type="AtlasTexture" id=3]
 atlas = ExtResource( 1 )
-region = Rect2( 64, 8, 8, 8 )
+region = Rect2( 56, 8, 8, 8 )
 
 [sub_resource type="AtlasTexture" id=4]
 atlas = ExtResource( 1 )
-region = Rect2( 72, 8, 8, 8 )
+region = Rect2( 64, 8, 8, 8 )
 
 [sub_resource type="AtlasTexture" id=5]
 atlas = ExtResource( 1 )
-region = Rect2( 80, 8, 8, 8 )
+region = Rect2( 72, 8, 8, 8 )
 
 [sub_resource type="AtlasTexture" id=6]
 atlas = ExtResource( 1 )
+region = Rect2( 80, 8, 8, 8 )
+
+[sub_resource type="AtlasTexture" id=7]
+atlas = ExtResource( 1 )
 region = Rect2( 88, 8, 8, 8 )
 
-[sub_resource type="SpriteFrames" id=7]
+[sub_resource type="SpriteFrames" id=8]
 animations = [ {
-"frames": [ SubResource( 1 ), SubResource( 2 ), SubResource( 3 ), SubResource( 4 ), SubResource( 5 ), SubResource( 6 ) ],
+"frames": [ SubResource( 2 ), SubResource( 3 ), SubResource( 4 ), SubResource( 5 ), SubResource( 6 ), SubResource( 7 ) ],
 "loop": true,
 "name": "default",
 "speed": 15.0
 } ]
 
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 4.02072, 3.98702 )
+
+[sub_resource type="Animation" id=9]
+resource_name = "Pickup"
+tracks/0/type = "audio"
+tracks/0/path = NodePath("CoinSound")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"clips": [ {
+"end_offset": 0.0,
+"start_offset": 0.0,
+"stream": ExtResource( 3 )
+} ],
+"times": PoolRealArray( 0 )
+}
+tracks/1/type = "method"
+tracks/1/path = NodePath("..")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.4 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "queue_free"
+} ]
+}
+
 [node name="Coin" type="Node2D"]
+
+[node name="CoinArea" type="Area2D" parent="."]
 script = ExtResource( 2 )
 
-[node name="Area2D" type="Area2D" parent="."]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+[node name="Coin" type="AnimatedSprite" parent="CoinArea"]
 scale = Vector2( 6, 6 )
-shape = SubResource( 8 )
-
-[node name="AnimatedSprite" type="AnimatedSprite" parent="Area2D"]
-scale = Vector2( 6, 6 )
-frames = SubResource( 7 )
-animation = "New Anim"
+frames = SubResource( 8 )
+frame = 1
 playing = true
 
-[node name="SpinSprite" type="Sprite" parent="."]
-visible = false
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CoinArea"]
 scale = Vector2( 6, 6 )
-texture = ExtResource( 1 )
-vframes = 12
-hframes = 12
-frame = 18
+shape = SubResource( 1 )
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-root_node = NodePath("../SpinSprite")
-anims/CoinSpin = ExtResource( 3 )
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CoinArea"]
+anims/Pickup = SubResource( 9 )
+
+[node name="CoinSound" type="AudioStreamPlayer" parent="CoinArea"]
+stream = ExtResource( 3 )
+[connection signal="body_entered" from="CoinArea" to="CoinArea" method="_on_CoinArea_body_entered"]

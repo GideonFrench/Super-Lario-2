@@ -1,9 +1,8 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://sprites/idle.png" type="Texture" id=1]
 [ext_resource path="res://Player.gd" type="Script" id=2]
 [ext_resource path="res://sprites/walk.png" type="Texture" id=3]
-[ext_resource path="res://AudioStreamPlayer.gd" type="Script" id=4]
 [ext_resource path="res://sound/Jump1.wav" type="AudioStream" id=5]
 
 [sub_resource type="RectangleShape2D" id=1]
@@ -55,7 +54,7 @@ scale = Vector2( 4, 4 )
 texture = ExtResource( 3 )
 hframes = 6
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="Player" type="CollisionShape2D" parent="."]
 position = Vector2( 5.75, 0.5 )
 scale = Vector2( 10, 10 )
 shape = SubResource( 1 )
@@ -69,4 +68,3 @@ anims/Movement = SubResource( 3 )
 stream = ExtResource( 5 )
 volume_db = -10.0
 pitch_scale = 0.7
-script = ExtResource( 4 )
