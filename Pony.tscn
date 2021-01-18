@@ -1,0 +1,28 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://sprites/tiles.png" type="Texture" id=1]
+[ext_resource path="res://PonyArea.gd" type="Script" id=2]
+[ext_resource path="res://sound/Ludum Dare 38 - Track 9.wav" type="AudioStream" id=3]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 48, 48 )
+
+[node name="Pony" type="Node2D"]
+
+[node name="PonyArea" type="Area2D" parent="."]
+script = ExtResource( 2 )
+
+[node name="PonyMusic" type="AudioStreamPlayer2D" parent="PonyArea"]
+scale = Vector2( 6, 6 )
+stream = ExtResource( 3 )
+
+[node name="Pony" type="Sprite" parent="PonyArea"]
+scale = Vector2( 6, 6 )
+texture = ExtResource( 1 )
+vframes = 6
+hframes = 6
+frame = 33
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PonyArea"]
+shape = SubResource( 1 )
+[connection signal="body_entered" from="PonyArea" to="PonyArea" method="_on_PonyArea_body_entered"]

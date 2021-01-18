@@ -2,6 +2,10 @@ extends KinematicBody2D
 
 # The score of how many coins picked up
 var score : int  = 0
+# How much health the player has, starts at 3
+var health : int = 3
+# Whether the player is invincible or not
+var invincible : bool = false
 # Whether the player can double jump or not, 1 if a jump is available
 var doublejump :int = 1
 # Acceleration to the right
@@ -28,29 +32,59 @@ var vel : Vector2 = Vector2()
 onready var isprite : Sprite = get_node("SpriteIdle")
 # The movement sprite
 onready var msprite : Sprite = get_node("SpriteMove")
+# The hurt sprite
+onready var hsprite : Sprite = get_node("SpriteHit")
 
 func _ready():
 	GameManager.Player = self
+	isprite.visible = true
+	msprite.visible = false
+	hsprite.visible = false
 	
 func increaseScore():
 	score += 1
-	GameManager.UI.set_text(String(score))
+	GameManager.coinUI.set_text(String(score))
 
-func _physics_process(delta):
-	# Only show the idle sprite at first
+func hurt():
+	if invincible == false and health > 0:
+		isprite.visible = false
+		msprite.visible = false
+		hsprite.visible = true
+		invincible = true
+		$HurtTimer.start()
+		$HurtTimer2.start()
+		$HurtSound.play()
+		GameManager.health -= 1
+		health -= 1
+	elif health == 0:
+		pass
+	
+func _on_HurtTimer_timeout():
+	invincible = false
+	
+func _on_HurtTimer2_timeout():
 	isprite.visible = true
 	msprite.visible = false
+	hsprite.visible = false
+
+func _physics_process(delta):
+	GameManager.health = health
 	
 	# If no key is being pressed and the player is on the floor, play the idle animation
-	if Input.is_action_pressed("move_left") == false and Input.is_action_pressed("move_right") == false and is_on_floor() == true:
+	if Input.is_action_pressed("move_left") == false and Input.is_action_pressed("move_right") == false and is_on_floor() == true and invincible == false:
+		isprite.visible = true
+		msprite.visible = false
+		hsprite.visible = false
 		get_node("AnimationPlayer").play("Idle")
 		get_node("AnimationPlayer").advance(0)
 	
 	# If the left key is pressed
-	if Input.is_action_pressed("move_left"):
+	if Input.is_action_pressed("move_left") and GameManager.end == false:
 		# Show only the movement sprite
-		isprite.visible = false
-		msprite.visible = true
+		if invincible == false:
+			isprite.visible = false
+			msprite.visible = true
+			hsprite.visible = false
 		# If the acceleration is low, set it to the base speed
 		if accel_l > -30:
 			accel_l = -1 * base_speed
@@ -64,11 +98,12 @@ func _physics_process(delta):
 		if is_on_floor():
 			get_node("AnimationPlayer").play("Movement")
 			get_node("AnimationPlayer").advance(0)
-	
-	if Input.is_action_pressed("move_right"):
+	elif Input.is_action_pressed("move_right") and GameManager.end == false:
 		# Show only the movement sprite
-		isprite.visible = false
-		msprite.visible = true
+		if invincible == false:
+			isprite.visible = false
+			msprite.visible = true
+			hsprite.visible = false
 		# If the acceleration is low, set it to the base speed
 		if accel_r < 30:
 			accel_r = base_speed	
@@ -102,13 +137,20 @@ func _physics_process(delta):
 	vel.y += gravity * delta
 	
 	# Jump
-	if Input.is_action_just_pressed("jump") and is_on_floor():
+	if Input.is_action_just_pressed("jump") and is_on_floor()and GameManager.end == false:
+		if invincible == false:
+			isprite.visible = false
+			msprite.visible = true
+			hsprite.visible = false
 		vel.y -= jumpForce
 		doublejump = 1
 		$JumpSound.play()
-	
 	# Double jump, only once per jump
-	if Input.is_action_just_pressed("jump") and doublejump == 1 and is_on_floor() == false:
+	if Input.is_action_just_pressed("jump") and doublejump == 1 and is_on_floor() == false and GameManager.end == false:
+		if invincible == false:
+			isprite.visible = false
+			msprite.visible = true
+			hsprite.visible = false
 		delta = 0
 		vel.y = -1*djumpForce
 		doublejump = 0

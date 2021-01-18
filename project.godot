@@ -23,6 +23,12 @@ config/icon="res://icon.png"
 
 GameManager="*res://GameManager.gd"
 
+[display]
+
+window/size/resizable=false
+window/stretch/mode="viewport"
+window/stretch/aspect="keep"
+
 [importer_defaults]
 
 texture={

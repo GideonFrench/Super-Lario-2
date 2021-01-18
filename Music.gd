@@ -1,4 +1,4 @@
-extends Label
+extends AudioStreamPlayer
 
 
 # Declare member variables here. Examples:
@@ -8,9 +8,8 @@ extends Label
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	GameManager.coinUI = self
+	pass # Replace with function body.
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+func _process(delta):
+	if GameManager.end == true:
+		self.stop()

@@ -1,4 +1,4 @@
-extends Label
+extends Node2D
 
 
 # Declare member variables here. Examples:
@@ -8,9 +8,10 @@ extends Label
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	GameManager.coinUI = self
+	$EndSprite.visible = false
+	GameManager.EndScreen = self
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+func GameEnd():
+	$EndSprite.visible = true
+	#$EndMusic.play()

@@ -78,7 +78,7 @@ script = ExtResource( 2 )
 [node name="Coin" type="AnimatedSprite" parent="CoinArea"]
 scale = Vector2( 6, 6 )
 frames = SubResource( 7 )
-frame = 3
+frame = 2
 playing = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CoinArea"]
@@ -90,4 +90,5 @@ anims/Pickup = SubResource( 9 )
 
 [node name="CoinSound" type="AudioStreamPlayer" parent="CoinArea"]
 stream = ExtResource( 3 )
+volume_db = 1.0
 [connection signal="body_entered" from="CoinArea" to="CoinArea" method="_on_CoinArea_body_entered"]

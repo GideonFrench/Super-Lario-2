@@ -1,0 +1,64 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://sprites/vhs.png" type="Texture" id=1]
+[ext_resource path="res://Rewind.gd" type="Script" id=2]
+[ext_resource path="res://sound/rewind.wav" type="AudioStream" id=3]
+
+[sub_resource type="Animation" id=1]
+resource_name = "gameover"
+step = 0.02
+tracks/0/type = "audio"
+tracks/0/path = NodePath("AudioStreamPlayer")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"clips": [ {
+"end_offset": 0.0,
+"start_offset": 0.0,
+"stream": ExtResource( 3 )
+} ],
+"times": PoolRealArray( 0 )
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("RewindSprite:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.04, 0.08, 0.12, 0.16, 0.2, 0.24, 0.28, 0.32, 0.36, 0.4, 0.44, 0.48, 0.52, 0.56, 0.6, 0.64, 0.68, 0.72, 0.76, 0.8, 0.84, 0.88, 0.92, 0.96 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 2, 9, 7, 20, 44, 52, 63, 47, 51, 56, 59, 64, 66, 69, 71, 85, 81, 71, 78, 82, 85, 87, 88, 91 ]
+}
+tracks/2/type = "method"
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray(  ),
+"transitions": PoolRealArray(  ),
+"values": [  ]
+}
+
+[node name="Rewind" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 3 )
+
+[node name="RewindAnim" type="AnimationPlayer" parent="."]
+anims/gameover = SubResource( 1 )
+
+[node name="RewindSprite" type="Sprite" parent="."]
+texture = ExtResource( 1 )
+vframes = 12
+hframes = 8
+
+[node name="RewindTimer" type="Timer" parent="."]
+wait_time = 0.8
+[connection signal="timeout" from="RewindTimer" to="." method="_on_RewindTimer_timeout"]

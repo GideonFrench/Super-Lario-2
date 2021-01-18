@@ -1,15 +1,33 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://sprites/idle.png" type="Texture" id=1]
 [ext_resource path="res://Player.gd" type="Script" id=2]
 [ext_resource path="res://sprites/walk.png" type="Texture" id=3]
+[ext_resource path="res://sound/Hero_Hurt.wav" type="AudioStream" id=4]
 [ext_resource path="res://sound/Jump1.wav" type="AudioStream" id=5]
+[ext_resource path="res://sprites/hit.png" type="Texture" id=6]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 3.1, 5.32959 )
+extents = Vector2( 2.73947, 5.32959 )
 
 [sub_resource type="Animation" id=2]
-resource_name = "Idle"
+resource_name = "Hit"
+length = 0.5
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("../SpriteHit:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 0, 1, 0 ]
+}
+
+[sub_resource type="Animation" id=3]
 length = 0.5
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:frame")
@@ -24,8 +42,7 @@ tracks/0/keys = {
 "values": [ 0, 1, 2, 3, 4 ]
 }
 
-[sub_resource type="Animation" id=3]
-resource_name = "Movement"
+[sub_resource type="Animation" id=4]
 length = 0.5
 step = 0.05
 tracks/0/type = "value"
@@ -45,26 +62,46 @@ tracks/0/keys = {
 script = ExtResource( 2 )
 
 [node name="SpriteIdle" type="Sprite" parent="."]
+visible = false
 scale = Vector2( 4, 4 )
 texture = ExtResource( 1 )
 hframes = 5
 
+[node name="SpriteHit" type="Sprite" parent="."]
+position = Vector2( 0, -10.7029 )
+scale = Vector2( 4, 4 )
+texture = ExtResource( 6 )
+hframes = 2
+frame = 1
+
 [node name="SpriteMove" type="Sprite" parent="."]
+visible = false
 scale = Vector2( 4, 4 )
 texture = ExtResource( 3 )
 hframes = 6
 
 [node name="Player" type="CollisionShape2D" parent="."]
-position = Vector2( 5.75, 0.5 )
+position = Vector2( 6.0473, 4.66222 )
 scale = Vector2( 10, 10 )
 shape = SubResource( 1 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 root_node = NodePath("../SpriteIdle")
-anims/Idle = SubResource( 2 )
-anims/Movement = SubResource( 3 )
+anims/Hit = SubResource( 2 )
+anims/Idle = SubResource( 3 )
+anims/Movement = SubResource( 4 )
+
+[node name="HurtTimer" type="Timer" parent="."]
+
+[node name="HurtTimer2" type="Timer" parent="."]
+wait_time = 0.25
+
+[node name="HurtSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 4 )
 
 [node name="JumpSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 5 )
 volume_db = -10.0
 pitch_scale = 0.7
+[connection signal="timeout" from="HurtTimer" to="." method="_on_HurtTimer_timeout"]
+[connection signal="timeout" from="HurtTimer2" to="." method="_on_HurtTimer_timeout"]

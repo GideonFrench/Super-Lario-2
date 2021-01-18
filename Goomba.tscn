@@ -1,15 +1,16 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://sprites/enemywalk.png" type="Texture" id=1]
 [ext_resource path="res://Goomba.gd" type="Script" id=2]
 [ext_resource path="res://KillArea.gd" type="Script" id=3]
 [ext_resource path="res://sprites/enemyhit.png" type="Texture" id=4]
 [ext_resource path="res://sound/Enemy_Dies.wav" type="AudioStream" id=5]
+[ext_resource path="res://Hurt Area.gd" type="Script" id=6]
 
-[sub_resource type="RectangleShape2D" id=3]
+[sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 9.3153, 10 )
 
-[sub_resource type="Animation" id=4]
+[sub_resource type="Animation" id=2]
 resource_name = "Death"
 tracks/0/type = "audio"
 tracks/0/path = NodePath("DeathSound")
@@ -76,8 +77,7 @@ tracks/4/keys = {
 "values": [ true ]
 }
 
-[sub_resource type="Animation" id=1]
-resource_name = "Walk"
+[sub_resource type="Animation" id=3]
 length = 0.5
 tracks/0/type = "value"
 tracks/0/path = NodePath("SpriteMove:frame")
@@ -92,8 +92,11 @@ tracks/0/keys = {
 "values": [ 0, 1, 2, 3, 4 ]
 }
 
-[sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 8.38566, 13.0142 )
+[sub_resource type="RectangleShape2D" id=4]
+extents = Vector2( 6.9413, 13.0142 )
+
+[sub_resource type="RectangleShape2D" id=5]
+extents = Vector2( 8.32349, 11.506 )
 
 [node name="Goomba" type="KinematicBody2D"]
 scale = Vector2( 4, 4 )
@@ -103,17 +106,15 @@ script = ExtResource( 2 )
 script = ExtResource( 3 )
 
 [node name="KillShape" type="CollisionShape2D" parent="KillArea"]
-position = Vector2( -0.278404, -5.67948 )
+position = Vector2( 0, -5.679 )
 scale = Vector2( 0.696972, 1.05255 )
-shape = SubResource( 3 )
+shape = SubResource( 1 )
 
 [node name="KillAnimation" type="AnimationPlayer" parent="KillArea"]
-anims/Death = SubResource( 4 )
+anims/Death = SubResource( 2 )
 
 [node name="DeathSound" type="AudioStreamPlayer" parent="KillArea"]
 stream = ExtResource( 5 )
-
-[node name="Hurt Area" type="Area2D" parent="."]
 
 [node name="SpriteDie" type="Sprite" parent="."]
 position = Vector2( -0.556816, -2.11588 )
@@ -124,12 +125,20 @@ hframes = 2
 position = Vector2( 0.0556831, -2.11588 )
 texture = ExtResource( 1 )
 hframes = 6
-frame = 1
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/Walk = SubResource( 1 )
+anims/Walk = SubResource( 3 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( -0.501133, -0.111362 )
-shape = SubResource( 2 )
+position = Vector2( -0.12656, -0.111362 )
+shape = SubResource( 4 )
+
+[node name="Hurt Area" type="Area2D" parent="."]
+script = ExtResource( 6 )
+
+[node name="HurtShape" type="CollisionShape2D" parent="Hurt Area"]
+position = Vector2( -0.0936432, 1.6856 )
+scale = Vector2( 1.16808, 1.24738 )
+shape = SubResource( 5 )
 [connection signal="body_entered" from="KillArea" to="KillArea" method="_on_KillArea_body_entered"]
+[connection signal="body_entered" from="Hurt Area" to="Hurt Area" method="_on_Hurt_Area_body_entered"]
