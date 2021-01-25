@@ -8,7 +8,7 @@
 [ext_resource path="res://sprites/hit.png" type="Texture" id=6]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 2.73947, 5.32959 )
+extents = Vector2( 2.92798, 5.32959 )
 
 [sub_resource type="Animation" id=2]
 resource_name = "Hit"
@@ -62,7 +62,6 @@ tracks/0/keys = {
 script = ExtResource( 2 )
 
 [node name="SpriteIdle" type="Sprite" parent="."]
-visible = false
 scale = Vector2( 4, 4 )
 texture = ExtResource( 1 )
 hframes = 5
@@ -75,13 +74,12 @@ hframes = 2
 frame = 1
 
 [node name="SpriteMove" type="Sprite" parent="."]
-visible = false
 scale = Vector2( 4, 4 )
 texture = ExtResource( 3 )
 hframes = 6
 
-[node name="Player" type="CollisionShape2D" parent="."]
-position = Vector2( 6.0473, 4.66222 )
+[node name="PlayerCollision" type="CollisionShape2D" parent="."]
+position = Vector2( 0, 4.662 )
 scale = Vector2( 10, 10 )
 shape = SubResource( 1 )
 
@@ -92,16 +90,18 @@ anims/Idle = SubResource( 3 )
 anims/Movement = SubResource( 4 )
 
 [node name="HurtTimer" type="Timer" parent="."]
+wait_time = 1.5
 
 [node name="HurtTimer2" type="Timer" parent="."]
-wait_time = 0.25
+wait_time = 0.2
 
 [node name="HurtSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 4 )
+volume_db = -5.0
+pitch_scale = 2.0
 
 [node name="JumpSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 5 )
-volume_db = -10.0
-pitch_scale = 0.7
+volume_db = -15.0
 [connection signal="timeout" from="HurtTimer" to="." method="_on_HurtTimer_timeout"]
-[connection signal="timeout" from="HurtTimer2" to="." method="_on_HurtTimer_timeout"]
+[connection signal="timeout" from="HurtTimer2" to="." method="_on_HurtTimer2_timeout"]

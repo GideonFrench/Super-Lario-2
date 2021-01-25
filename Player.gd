@@ -6,6 +6,7 @@ var score : int  = 0
 var health : int = 3
 # Whether the player is invincible or not
 var invincible : bool = false
+var hurtframe : bool = false
 # Whether the player can double jump or not, 1 if a jump is available
 var doublejump :int = 1
 # Acceleration to the right
@@ -46,23 +47,27 @@ func increaseScore():
 	GameManager.coinUI.set_text(String(score))
 
 func hurt():
-	if invincible == false and health > 0:
+	if hurtframe == false and health > 0 and invincible == false:
 		isprite.visible = false
 		msprite.visible = false
 		hsprite.visible = true
 		invincible = true
+		hurtframe = true
 		$HurtTimer.start()
 		$HurtTimer2.start()
 		$HurtSound.play()
 		GameManager.health -= 1
 		health -= 1
+		modulate.a = 0.7
 	elif health == 0:
 		pass
 	
 func _on_HurtTimer_timeout():
+	modulate.a = 1
 	invincible = false
 	
 func _on_HurtTimer2_timeout():
+	hurtframe = false
 	isprite.visible = true
 	msprite.visible = false
 	hsprite.visible = false
@@ -71,7 +76,7 @@ func _physics_process(delta):
 	GameManager.health = health
 	
 	# If no key is being pressed and the player is on the floor, play the idle animation
-	if Input.is_action_pressed("move_left") == false and Input.is_action_pressed("move_right") == false and is_on_floor() == true and invincible == false:
+	if Input.is_action_pressed("move_left") == false and Input.is_action_pressed("move_right") == false and is_on_floor() == true and hurtframe == false:
 		isprite.visible = true
 		msprite.visible = false
 		hsprite.visible = false
@@ -81,7 +86,7 @@ func _physics_process(delta):
 	# If the left key is pressed
 	if Input.is_action_pressed("move_left") and GameManager.end == false:
 		# Show only the movement sprite
-		if invincible == false:
+		if hurtframe == false:
 			isprite.visible = false
 			msprite.visible = true
 			hsprite.visible = false
@@ -100,7 +105,7 @@ func _physics_process(delta):
 			get_node("AnimationPlayer").advance(0)
 	elif Input.is_action_pressed("move_right") and GameManager.end == false:
 		# Show only the movement sprite
-		if invincible == false:
+		if hurtframe == false:
 			isprite.visible = false
 			msprite.visible = true
 			hsprite.visible = false
@@ -137,7 +142,7 @@ func _physics_process(delta):
 	vel.y += gravity * delta
 	
 	# Jump
-	if Input.is_action_just_pressed("jump") and is_on_floor()and GameManager.end == false:
+	if Input.is_action_just_pressed("jump") and is_on_floor() and GameManager.end == false:
 		if invincible == false:
 			isprite.visible = false
 			msprite.visible = true

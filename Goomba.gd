@@ -13,6 +13,11 @@ var vel : Vector2 = Vector2()
 func _ready():
 	dsprite.visible = false
 	msprite.visible = true
+	
+func _on_KillArea_body_entered(body):
+	if body.name == "Player":
+		speed = 0
+		vel.x = 0
 
 func _physics_process(delta):
 	get_node("AnimationPlayer").play("Walk")

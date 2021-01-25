@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://sprites/tiles.png" type="Texture" id=1]
-[ext_resource path="res://DestructArea.gd" type="Script" id=2]
+[ext_resource path="res://PowerupArea.gd" type="Script" id=2]
 [ext_resource path="res://sound/Shield.wav" type="AudioStream" id=3]
 
 [sub_resource type="Animation" id=1]
@@ -41,34 +41,34 @@ extents = Vector2( 16, 8 )
 [sub_resource type="RectangleShape2D" id=3]
 extents = Vector2( 24, 7.85183 )
 
-[node name="Destruct" type="Node2D"]
+[node name="Powerup" type="Node2D"]
 
-[node name="DestructArea" type="Area2D" parent="."]
+[node name="PowerupArea" type="Area2D" parent="."]
 script = ExtResource( 2 )
 
-[node name="BlockSprite" type="Sprite" parent="DestructArea"]
+[node name="BlockSprite" type="Sprite" parent="PowerupArea"]
 scale = Vector2( 6, 6 )
 texture = ExtResource( 1 )
 vframes = 12
 hframes = 12
-frame = 13
+frame = 136
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="DestructArea"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="PowerupArea"]
 anims/Destroy = SubResource( 1 )
 
-[node name="DestroyShape" type="CollisionShape2D" parent="DestructArea"]
+[node name="PowerShape" type="CollisionShape2D" parent="PowerupArea"]
 position = Vector2( 0, 16 )
 shape = SubResource( 2 )
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="DestructArea"]
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="PowerupArea"]
 stream = ExtResource( 3 )
 volume_db = -10.0
-pitch_scale = 1.5
+pitch_scale = 0.5
 
-[node name="DestructCollision" type="StaticBody2D" parent="."]
+[node name="PowerCollision" type="StaticBody2D" parent="."]
 
-[node name="CollisionShape" type="CollisionShape2D" parent="DestructCollision"]
+[node name="CollisionShape" type="CollisionShape2D" parent="PowerCollision"]
 position = Vector2( 0, -4.4 )
 scale = Vector2( 1, 2.5 )
 shape = SubResource( 3 )
-[connection signal="body_entered" from="DestructArea" to="DestructArea" method="_on_DestructArea_body_entered"]
+[connection signal="body_entered" from="PowerupArea" to="PowerupArea" method="_on_DestructArea_body_entered"]

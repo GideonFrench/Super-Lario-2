@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/Ludum Dare 28 - Track 4.ogg-2c4f9f06008421dfbb5e9ce72aa9d314.oggstr"
+
+[deps]
+
+source_file="res://sound/Ludum Dare 28 - Track 4.ogg"
+dest_files=[ "res://.import/Ludum Dare 28 - Track 4.ogg-2c4f9f06008421dfbb5e9ce72aa9d314.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

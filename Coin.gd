@@ -6,5 +6,6 @@ func _on_CoinArea_body_entered(body):
 		GameManager.Player.increaseScore()
 		# Sets coin to disappear
 		$Coin.visible = false
+		$CoinSound.play()
 		# Plays noise and removes from scene
 		$AnimationPlayer.play("Pickup")

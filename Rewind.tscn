@@ -50,6 +50,8 @@ script = ExtResource( 2 )
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 3 )
+volume_db = -10.0
+pitch_scale = 0.7
 
 [node name="RewindAnim" type="AnimationPlayer" parent="."]
 anims/gameover = SubResource( 1 )

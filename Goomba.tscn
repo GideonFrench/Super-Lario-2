@@ -115,6 +115,8 @@ anims/Death = SubResource( 2 )
 
 [node name="DeathSound" type="AudioStreamPlayer" parent="KillArea"]
 stream = ExtResource( 5 )
+volume_db = -5.0
+pitch_scale = 2.0
 
 [node name="SpriteDie" type="Sprite" parent="."]
 position = Vector2( -0.556816, -2.11588 )
@@ -122,6 +124,7 @@ texture = ExtResource( 4 )
 hframes = 2
 
 [node name="SpriteMove" type="Sprite" parent="."]
+visible = false
 position = Vector2( 0.0556831, -2.11588 )
 texture = ExtResource( 1 )
 hframes = 6
@@ -140,5 +143,6 @@ script = ExtResource( 6 )
 position = Vector2( -0.0936432, 1.6856 )
 scale = Vector2( 1.16808, 1.24738 )
 shape = SubResource( 5 )
+[connection signal="body_entered" from="KillArea" to="." method="_on_KillArea_body_entered"]
 [connection signal="body_entered" from="KillArea" to="KillArea" method="_on_KillArea_body_entered"]
 [connection signal="body_entered" from="Hurt Area" to="Hurt Area" method="_on_Hurt_Area_body_entered"]
